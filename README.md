@@ -203,7 +203,7 @@ hello
 
 
 
-![等待中](/Users/shizhenchao/Library/Application Support/typora-user-images/image-20220523151920691.png)
+![等待中](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231546413.png)
 
 
 
