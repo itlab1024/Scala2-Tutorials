@@ -1,0 +1,251 @@
+# 什么是Scala？
+
+[Scala ](https://scala-lang.org/)是一门基于JVM和Java完全兼容的语言，具有跨平台，可移植性，完备的垃圾回收机制等特定
+
+Scala比Java更加面向对象，他是一门纯面向对象的语言，我们知道Java并不是，比如他具有基本类型。
+
+Scala是一门函数式编程语言，Java并不是，JDK8增加的Lambda是函数式。
+
+Scala的非常适合大数据处理，我们熟悉的Spark、Flink、Kafka等底层都是使用Scala实现的。
+
+
+
+Scala目前主流版本是2，目前版本3也已经Released。先学习2，再学习3。
+
+![Scala官网](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231147213.png)
+
+
+
+# 为什么学习Scala？
+
+Scala的好处上面已经提到过了，这些是我们学习Scala的理由，单不完全是我的理由。
+
+我的理由主要是：
+
+```tex
+公司业务是物联网（IOT），工作需要大数据相关技术，所以学习。
+
+个人也比较喜欢新技术，除了Scala，我也学习目前流行的Golang语言。
+```
+
+建议：学习新技术要根据自己实际情况而定，首先要工作需要的技术，这能够提高技术同时是的自己在岗位上更加突出，更加胜任工作，其次学习时间比较多。
+
+# 学习资料
+
+我目前学习Scala的主要渠道主要有两处，官网和尚硅谷视频。
+
+官网是必须要看的，并且强烈推荐看英文原版内容，有些中文网翻译水平实在有限，并且有错误。
+
+我虽然主要看官网，但是官网资料比较松散，自己又不太爱总结，也觉得浪费时间，我是初学一门语言，在学习Scala的路上，我就是个菜鸟。尚硅谷的视频还是非常不错的（不是打广告哈哈）。
+
+我学习的过程中主要是跟着尚硅谷的视频学习，但是不完全操作其内容，主要是根据他的目录来学习。
+
+
+
+# Scala入门
+
+## Scala、Java、JVM的关系
+
+![Scala、Java和JVM关系](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231300992.jpeg)
+
+Java和JVM的关系：写代码(.java) => 使用`javac`命令编译为`.class`文件 => 使用JVM运行
+
+Scala和JVM的关系：写代码(.scala) =>使用`scalac`命令编译为`.class`文件 => 使用JVM运行
+
+两者极其类似！！！
+
+Scala能够使用Java类库！！！
+
+
+
+## Scala环境安装
+
+前提：scala基于JVM，要求我们环境要安装JDK。JDK的安装请自行查询，检查JDK是否安装
+
+```shell
+➜  ~ java -version
+openjdk version "17.0.3" 2022-04-19 LTS
+OpenJDK Runtime Environment Corretto-17.0.3.6.1 (build 17.0.3+6-LTS)
+OpenJDK 64-Bit Server VM Corretto-17.0.3.6.1 (build 17.0.3+6-LTS, mixed mode, sharing)
+```
+
+我电脑安装的是OpenJDK17，只要大于8即可。
+
+Scala支持Mac、Windows、Linux等系统。有多种安装方式，
+
+![image-20220523130559667](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231305748.png)
+
+官方推荐使用`cs setup`安装
+
+```shell
+➜  ~ brew install coursier/formulas/coursier && cs setup
+Updating Homebrew...
+==> Downloading https://github.com/coursier/coursier/releases/download/v2.1.0-M5
+Already downloaded: /Users/shizhenchao/Library/Caches/Homebrew/downloads/a34af3e5d8010f4b87297cbcf23a7090d907d343dfbb691e9ddea9facb4b1605--coursier
+==> Downloading https://github.com/coursier/coursier/releases/download/v2.1.0-M5
+Already downloaded: /Users/shizhenchao/Library/Caches/Homebrew/downloads/e56f4bc31b6326034ab85448faa48e50054affc7b327e3e82180fc861633fc54--cs-x86_64-apple-darwin.gz
+==> Installing coursier from coursier/formulas
+^C^C
+One sec, cleaning up...
+
+➜  ~ 
+➜  ~ brew install coursier/formulas/coursier && cs setup
+Updating Homebrew...
+==> Downloading https://github.com/coursier/coursier/releases/download/v2.1.0-M5
+Already downloaded: /Users/shizhenchao/Library/Caches/Homebrew/downloads/a34af3e5d8010f4b87297cbcf23a7090d907d343dfbb691e9ddea9facb4b1605--coursier
+==> Downloading https://github.com/coursier/coursier/releases/download/v2.1.0-M5
+Already downloaded: /Users/shizhenchao/Library/Caches/Homebrew/downloads/e56f4bc31b6326034ab85448faa48e50054affc7b327e3e82180fc861633fc54--cs-x86_64-apple-darwin.gz
+==> Installing coursier from coursier/formulas
+==> Caveats
+zsh completions have been installed to:
+  /usr/local/share/zsh/site-functions
+==> Summary
+🍺  /usr/local/Cellar/coursier/2.1.0-M5-18-gfebf9838c: 5 files, 57.4MB, built in 49 seconds
+Checking if a JVM is installed
+Found a JVM installed under /Users/shizhenchao/Library/Java/JavaVirtualMachines/corretto-17.0.3/Contents/Home.
+
+Checking if ~/Library/Application Support/Coursier/bin is in PATH
+
+Checking if the standard Scala applications are installed
+  Installed ammonite
+  Installed cs
+  Installed coursier
+  Installed scala
+  Installed scalac
+  Installed sbt
+  Installed sbtn
+  Installed scalafmt
+```
+
+默认安装的scala是最新版本（3.1.2）
+
+因为我主要是跟着尚硅谷视频学习，所以同步使用他的版本（2.12.11）
+
+安装参考如下地址：https://scala-lang.org/download/2.12.11.html
+
+通过命令行用`cs`工具安装
+
+```shell
+➜  ~ cs install scala:2.12.11 && cs install scalac:2.12.11
+https://repo1.maven.org/maven2/io/get-coursier/apps/maven-metadata.xml
+  No new update since 2022-05-16 17:11:57
+https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.11/scala-comp…
+  100.0% [##########] 2.6 KiB (10.9 KiB / s)
+https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.11/scala-refle…
+  100.0% [##########] 1.8 KiB (8.0 KiB / s)
+https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.11/scala-comp…
+  100.0% [##########] 10.2 MiB (4.0 MiB / s)
+https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.11/scala-refle…
+  100.0% [##########] 3.5 MiB (1.1 MiB / s)
+Wrote scala
+Wrote scalac
+
+➜  ~ scala -version
+Scala code runner version 2.12.11 -- Copyright 2002-2020, LAMP/EPFL and Lightbend, Inc.
+```
+
+温馨提示：如果使用二进制安装，需要配置环境变量。
+
+交互式命令行，输入`scala`命令接口打开：
+
+```scala
+➜  ~ scala
+Welcome to Scala 2.12.11 (OpenJDK 64-Bit Server VM, Java 17.0.3).
+Type in expressions for evaluation. Or try :help.
+
+scala> val a:Int = 10
+a: Int = 10
+
+scala> val b:Int =5
+b: Int = 5
+
+scala> a + b
+res0: Int = 15
+
+scala> 
+```
+
+
+
+写代码并编译执行，创建一个Hello.scala文件，文件内容如下
+
+```scala
+object Hello {
+	def main(ags: Array[String]): Unit = {
+		println("hello")
+	}
+}
+```
+
+使用`scalac`编译文件，使用`scala`指令运行
+
+```shell
+➜  Scala2-Tutorials git:(main) ✗ scalac Hello.scala 
+➜  Scala2-Tutorials git:(main) ✗ scala Hello         
+hello
+```
+
+
+
+## 编程工具
+
+官方推荐使用`VSCode`和`IDEA`，我个人非常喜欢使用`IDEA`，接下来我也会在IDEA上进行开发。
+
+## 安装插件
+
+使用`IDEA`开发scala需要安装插件。
+
+![IDEA安装Scala插件](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231446809.png)
+
+## 创建项目
+
+![IDEA创建Scala项目](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231515233.png)
+
+
+
+![等待中](/Users/shizhenchao/Library/Application Support/typora-user-images/image-20220523151920691.png)
+
+
+
+![创建完成](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231528324.png)
+
+Scala支持使用`SBT`和`IntelliJ`创建项目，我用的是`sbt`。其他的方式我就不演示了。
+
+## HelloWorld
+
+创建package
+
+在上图中`scala`文件夹上邮件，选择创建package
+
+![创建package](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231531551.png)
+
+创建一个Object，scala中的`Object`是一个单例类，全局只有一份
+
+![新建Scala Class，选中Object](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231533007.png)
+
+编写入口程序main方法的代码
+
+![Hello World main代码](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231535529.png)
+
+
+
+解析下上面的main方法
+
+```scala
+package io.itlab1024.github.scala
+
+/**
+ * object：scala中的一个关键字，声明一个单例对象，也叫做伴生对象
+ */
+object HelloWorld {
+  /**
+   * 程序的入口方法， def是关键字，用于定义方法，括号内是参数信息，args是参数名，通过：类型定义数据类型，
+   * 此main方法中args参数的类型是是字符串数组，其实这跟java的类似，只不过表现形式不同而已。括号后面的:Unit代表返回类型，Unit在scala中代表空，类似于Java中的Void
+   * @param args
+   */
+  def main(args: Array[String]): Unit = {
+    println("Hello World")
+  }
+}
+```
+
