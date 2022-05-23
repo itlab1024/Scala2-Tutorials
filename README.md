@@ -249,3 +249,66 @@ object HelloWorld {
 }
 ```
 
+## 伴生对象
+
+`object`关键字是用于创建伴生对象，什么是伴生对象呢？伴随谁而生？想想我们再Java中使用`static`定义一个对象，如何访问呢？我们需要使用类名.属性来访问。看下下面的代码
+
+```java
+package io.itlab1024.github.scala;
+
+/**
+ * 饮料类
+ */
+public class Drink {
+    private static final String MAJOR = "水";
+    /**
+     * 水果成分
+     */
+    private String fruits;
+
+    public String getFruits() {
+        return fruits;
+    }
+
+    public void setFruits(String fruits) {
+        this.fruits = fruits;
+    }
+    
+    public void show() {
+        System.out.println("MAJOR=" + Drink.MAJOR + ", Fruits=" + this.fruits);
+    }
+}
+```
+
+上面代码是java中的定义，`Drink`代表饮料类，有两个成员变量类，`MAJOR`代表主成分（饮料主成分都是水），使用`static`定义，还有一个`fruits`代表水果，我们看下第22行中`Drink.MAJOR`使用的是类名字.属性访问，这在java中是正确的，但是这并不符合面向对象的设计，因为我并没有通过对象获取属性，scala中伴生对象就是创造一个伴生类的对象（伴生对象）。这更符合面向对象的思想。
+
+上面的例子我通过scala的class和object实现(用新的名字ScalaDrink，否则类冲突，当然也可以修改内容中的class后的名字，而不是修改文件名。)
+
+```scala
+package io.itlab1024.github.scala.chapter01
+
+/**
+ * Scala中Drink类
+ */
+class ScalaDrink (fruits: String){
+  def show (): Unit = {
+    println("MAJOR=" + ScalaDrink.MAJOR + ", Fruits=" + this.fruits)
+  }
+}
+
+// 伴生对象
+object ScalaDrink {
+  var MAJOR: String = "水"
+}
+```
+
+IDEA工具很有好的为我们编辑了类和伴生对象的关系。
+
+![伴生对象关系](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231617342.png)
+
+
+
+个人体会：scala为了满足纯面向对象的设计，搞得复杂了，语言我觉得越简单越好。
+
+
+
