@@ -2,7 +2,7 @@ package io.itlab1024.github.scala.chapter02
 
 import io.itlab1024.github.scala.chapter01.ScalaDrink
 
-class Test02_Variable {
+object Test02_Variable {
   def main(args: Array[String]): Unit = {
     // 定义变量
     var i: Int = 10

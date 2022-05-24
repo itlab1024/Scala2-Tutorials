@@ -351,7 +351,7 @@ package io.itlab1024.github.scala.chapter02
 
 import io.itlab1024.github.scala.chapter01.ScalaDrink
 
-class Test02_Variable {
+object Test02_Variable {
   def main(args: Array[String]): Unit = {
     // 定义变量
     var i: Int = 10
@@ -391,16 +391,133 @@ scala中的标识符命名规则基本与java一致。
 
    scala中的关键字主要有
 
-   * `package`，`import`，`class`，`object`，`trait`，`extends`，`with`，`type`，
+   * `package`，`import`，`class`，**`object`**，**`trait`**，`extends`，**`with`**，`type`，
 
    `for`
 
-   * `private`，`protected`，`abstract`，`scaled`，`final`，`implicit`，`lazy`，`override`
-   * `if`，`else`，`match`，`case`，`do`，`while`，`for`，`return`，`yield`
-   * `def`，`var`，`val`
+   * `private`，`protected`，`abstract`，**`scaled`**，`final`，**`implicit`**，`lazy`，`override`
+   * `if`，`else`，**`match`**，`case`，`do`，`while`，`for`，`return`，**`yield`**
+   * **`def`，`var`，`val`**
    * `this`，`super`
    * `new`
    * `true`, `false`, `null`
 
 **示例**
+
+```scala
+package io.itlab1024.github.scala.chapter02
+
+/**
+ * 标识符规范测试
+ */
+object Test03_Identifier {
+  def main(args: Array[String]): Unit = {
+    //    （1）标识符由字母、数字、下划线组成，但是首字母必须是字母或者下划线
+    val scala: String = "scala"
+    val scala134: Int = 1
+    val _scala: String = "scala"
+    //    val 1scala: Int = 1 //编译不通过，不能以为数字开头
+    //    val a+b = 1 // IDEA工具并不提示错误，但是实际上是不允许的，会提示not found: value +
+
+
+    // (2)以操作符开头，且只能包含操作符（#-*/#!等）
+    // 搞不懂谁会这么干，有实际应用场景吗？？？
+    val +-*/ = 10 //正确
+    val +#%^&^*&&* = 10 //正确
+    println(+#%^&^*&&*)
+
+    // (3) 用反引号``将任意字符串包起来，这是合法的标识符，即便是scala中的关键字也是可以的，
+    // 上面有个定义a+b是允许的，但是如果使用反引号引起来就是允许的
+    val `a+b` = 1
+    println(`a+b`)
+    // 关键字也是允许的
+    //    val if = 1 //编译不通过
+    val `if` = 1
+    println(`if`) //正确
+
+  }
+}
+```
+
+
+
+### 字符串输出
+
+字符串可以通过`+`操作符进行相加，例如`"a" + "b" `结果是`ab`
+
+`printf`格式化输出，通过`%`来显示不同内容，类似java中的`System.out.printf`以及Go中的`fmt.Printf`。
+
+插值字符串，在字符串总通过`$`获取变量进行拼接
+
+示例
+
+```scala
+package io.itlab1024.github.scala.chapter02
+
+object Test04_String {
+  def main(args: Array[String]): Unit = {
+    // 字符串连接
+    val a = "I am learning "
+    val b = "scala"
+    println(a + b) // I am learning scala
+
+    // printf格式化输出
+    printf("%s%s\n", a, b) // I am learning scala
+
+    // 插值字符串（模板字符串）
+    println(s"$a$b") // I am learning scala， s是一个函数， 定义源码：def s(args: Any*): String = standardInterpolator(treatEscapes, args)
+
+    // 也可以使用${}，通过+运算符进行连接
+    println(s"${a + b}") // I am learning scala
+
+    // ${}其实可以写scala代码，调用函数等等都是支持的
+    println(s"${1 + 2 + math.pow(1, 2)}") // 4.0
+
+    //格式化小数，比如小数位数,需要注意的是这就不能使用s函数，如果使用会原样输出，需要使用f函数。
+    val f: Float = 11.2356F
+    println(f"$f%2.2f") //11.24   这就是说小数点前面要保证两位，小数点后也是两位，多余位数四舍五入，舍弃
+    // 也可以省略.前面的数字
+    println(f"$f%.2f") //11.24
+    // 前面的数字有范围吗?
+    println(f"$f%100.2f") //输出空，为什么？我也不知道，有空看看源码吧，我估计还有很多细节，平时可能不会用到，但是面试或者考试估计就会出题，我们知道套路就是这样
+
+    //raw函数的使用
+    println(raw"$f%2.2f") // 11.2356%2.2f，除了$获取变量值外，其他的字符原样输出了
+    println(s"$f%2.2f") // 11.2356%2.2f
+    // s函数和raw函数结果一样，那么他俩有啥区别呢
+    println(raw"$f%2.2f\t回车") // 11.2356%2.2f\t回车， 真正的原样输出
+    println(s"$f%2.2f\t回车") // 11.2356%2.2f	回车， \t未原样输出，被解析制表符
+
+
+    // 三引号
+    val s1: String =
+      """
+        |i
+        |am
+        |learning
+        |scala
+        |""".stripMargin
+    println(s1) // 原样输出，注意不会输出|,会有回车换行
+
+    // 三引号字符串同样可以使用s,raw等函数
+    val s2 =
+      s"""
+         |The
+         |value
+         |is
+         |$a
+         |""".stripMargin
+     println(s2)
+
+    // raw
+    val s3 =
+      raw"""
+           |$a \txx
+           |""".stripMargin
+   println(s3)
+
+
+  }
+}
+```
 
