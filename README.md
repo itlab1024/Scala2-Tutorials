@@ -489,7 +489,7 @@ object Test04_String {
     println(s"$f%2.2f\t回车") // 11.2356%2.2f	回车， \t未原样输出，被解析制表符
 
 
-    // 三引号
+    // 三引号字符串，stripMargin是字符串的函数，忽略边界
     val s1: String =
       """
         |i
@@ -520,4 +520,76 @@ object Test04_String {
   }
 }
 ```
+
+### 键盘输入
+
+键盘输入一般在开发交互式的程序中很有用。
+
+常用基本语法
+
+`StdIn.readLine()`,`StdIn.readShort()`,`StdIn.readDouble()`，`StdIn.readInt()`等等
+
+示例
+
+```scala
+package io.itlab1024.github.scala.chapter02
+
+import scala.io.StdIn
+
+object Test05_StdIn {
+  def main(args: Array[String]): Unit = {
+    println("请输入姓名")
+    val name = StdIn.readLine()
+    println("请输入年龄")
+    val age = StdIn.readInt()
+    println(s"$name 的年龄是$age")
+  }
+}
+
+```
+
+![绿色部分是用户输入部分](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205250946966.png)
+
+### 文件输入输出（IO）
+
+文件输入主要使用到是scala中的`scala.io`包内容，但是scala并没有提供文件输出api，需要调用java的API实现
+
+```scala
+package io.itlab1024.github.scala.chapter02
+
+import java.io.PrintWriter
+import scala.io.Source
+
+/**
+ * 文件的输入输出
+ *
+ * @author itlab1024
+ */
+object Test06_FileIO {
+  def main(args: Array[String]): Unit = {
+    // 从文件中读取数据，使用scala.io包下的相关包
+    // 读取文件主要分为三个步骤,1：打开文件流，2：读取文件，3：关闭文件流
+    val bufferedSource = Source.fromFile("src/main/resources/read.text")
+    bufferedSource.foreach(print)
+    bufferedSource.close()
+
+    // 写内容到文件,scala中没有实现写文件的api，我们需要通过调用Java的api来实现
+    val writer = new PrintWriter("src/main/resources/write.txt")
+    writer.write("I am learning scala")
+    writer.close()
+  }
+}
+```
+
+### 数据类型
+
+数据类型是任何一门语言的重点，scala也不例外。
+
+学过java的应该知道Java有8个基本类型`char`，`byte`，`short`，`int`，`long`，`float`，`double`，`boolean`
+
+还有上面8中类型对应的引用类型，以及`String`或者是自定义的引用类型。
+
+scala是纯面向对象的语言，没有基本类型概念，我们通过官网一张图来看下类型继承关系。
+
+
 
