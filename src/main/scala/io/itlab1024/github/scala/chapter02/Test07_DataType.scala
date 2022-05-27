@@ -59,7 +59,7 @@ object Test07_DataType {
     // Null
     val p: Null = null
     // Nothing,比如下面方法可以返回Nothing，但是实际并不这么做，因为他是所有类型的子类
-    def nothingTest() : Nothing = {
+    def  nothingTest() : Nothing = {
       throw RuntimeException // 必须抛出异常，否则提示返回类型应该是Void
     }
     //实际我们可能会这样做
