@@ -887,15 +887,146 @@ val i = j.+(1)
 
 ## if-else
 
-**单分支**
+***
 
 基本语法
 
 ```scala
 if（条件） {
-	// 代码
+	// 当条件是true的时候执行此处代码
+} else {
+  // 当条件是false的时候执行此处代码
 }
 ```
 
-示例：
+用法与java基本一致。
+
+**特别之处**
+
+scala中每个表达式都是有返回值的，一是要保证每个分支返回类型相同，如果确实不同，则接收者类型要使用不同类型的父类。
+
+```scala
+package io.itlab1024.github.scala
+
+import scala.io.StdIn
+
+/**
+ * if - else控制
+ */
+object Test01_IfElse {
+  def main(args: Array[String]): Unit = {
+    // if else
+    val a: Int = 1
+    if (a > 0) {
+      println("正数")
+    } else if (a == 0) {
+      println("0")
+    } else {
+      println("负数")
+    }
+
+
+
+
+    // if else的返回值
+    val b: Int = 10
+    val c : Unit = if (b > 0) {
+      println("测试返回值")
+    }
+    println(c) // ()
+
+    // 多分支情况要保证最后返回的类型相同
+    val d : String = if (b > 0) {
+      println("测试返回值") // 此处返回是Unit，而else中返回是String，而接收者d的类型是String，这是不允许的（假设下行字符串代码没有）。
+      "此处也返回String，保证每个分支返回的数据类型格式统一"
+    } else {
+      return "abc"
+    }
+  }
+}
+
+```
+
+
+
+## match模式匹配
+
+scala中没有`switch`，取而代之的是`match`
+
+相比于Java，scala中的match，没有break关键字，使用`_`代表默认分支
+
+```scala
+package io.itlab1024.github.scala.chapter04
+
+object Test02_Match {
+  def main(args: Array[String]): Unit = {
+    //match基本用法
+    val i = 0
+    i match {
+      case 0 => println("等于0")
+      case _ => println("不等于0") // _代表默认分支
+    }
+
+    // match也有返回值
+    val str = i match {
+      case 0 => "ZERO"
+      case _ => "NON ZERO"
+    }
+    println(str)
+
+    // 同一个case语句有多个匹配值的时候，使用|分隔
+    i match {
+      case 0 | 1 => "0 or 1"
+      case _ => "other"
+    }
+
+    // case中也可以使用表达式
+    val o  = 1
+    i match {
+      case i if (i == 0) => "zero" //case后if表达式的括号scala是不推荐使用的。编辑器也提示给我们了
+      case _ if o == 1 => "o is zero"
+    }
+
+    //case语句中判断数组是否包含匹配的数据
+    i match {
+      case a if 0 to 9 contains a  => println("包含")
+    }
+  }
+}
+
+```
+
+
+
+match还支持匹配`case class`后面学到的时候再用。
+
+## for循环
+
+### 范围循环
+
+主要使用`to`和`until`关键字来实现范围循环，其中`to`标识包含左右边界值，比如 `0 to 10`包含0和10，`until`则不包含10
+
+```scala
+ // 普通范围循环,使用to关键字,包含左右边界值
+ for (i <- 0 to 10) {
+ println(i)
+ }
+
+// 也可以使用until方法， 不包含后面的边界值
+for (i <- 0 until 10) {
+println(i)
+}
+```
+
+### 循环守卫
+
+循环守卫的意思是说允许在for循环范围语句后面增加if表达式，只有当表达式=true的时候才进行循环
+
+```scala
+// 循环守卫
+val b : Int = 0
+for (i <- 0 to 10 if b > 1) {
+//永远不会执行，因为循环守卫 b > = 结果是false
+}
+```
 
