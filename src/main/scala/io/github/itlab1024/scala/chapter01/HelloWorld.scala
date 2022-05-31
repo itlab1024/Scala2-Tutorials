@@ -1,4 +1,4 @@
-package io.itlab1024.github.scala.chapter01
+package io.github.itlab1024.scala.chapter01
 
 /**
  * object：scala中的一个关键字，声明一个单例对象，也叫做伴生对象

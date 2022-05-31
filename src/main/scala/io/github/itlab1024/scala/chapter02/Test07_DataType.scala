@@ -1,4 +1,4 @@
-package io.itlab1024.github.scala.chapter02
+package io.github.itlab1024.scala.chapter02
 
 /**
  * 数据类型操作

@@ -1,4 +1,4 @@
-package io.itlab1024.github.scala.chapter04
+package io.github.itlab1024.scala.chapter04
 
 object Test02_Match {
   def main(args: Array[String]): Unit = {

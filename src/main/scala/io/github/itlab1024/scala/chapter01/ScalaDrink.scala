@@ -1,4 +1,4 @@
-package io.itlab1024.github.scala.chapter01
+package io.github.itlab1024.scala.chapter01
 
 /**
  * Scala中Drink类

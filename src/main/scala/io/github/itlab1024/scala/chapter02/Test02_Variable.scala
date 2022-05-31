@@ -1,6 +1,6 @@
-package io.itlab1024.github.scala.chapter02
+package io.github.itlab1024.scala.chapter02
 
-import io.itlab1024.github.scala.chapter01.ScalaDrink
+import io.github.itlab1024.scala.chapter01.ScalaDrink
 
 object Test02_Variable {
   def main(args: Array[String]): Unit = {

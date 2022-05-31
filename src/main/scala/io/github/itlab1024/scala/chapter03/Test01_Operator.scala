@@ -1,4 +1,4 @@
-package io.itlab1024.github.scala.chapter03
+package io.github.itlab1024.scala.chapter03
 
 /**
  * 运算符操作

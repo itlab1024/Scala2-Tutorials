@@ -1,4 +1,4 @@
-package io.itlab1024.github.scala.chapter02
+package io.github.itlab1024.scala.chapter02
 
 /**
  * 标识符规范测试

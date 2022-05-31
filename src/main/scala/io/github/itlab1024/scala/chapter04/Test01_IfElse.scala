@@ -1,4 +1,4 @@
-package io.itlab1024.github.scala.chapter04
+package io.github.itlab1024.scala.chapter04
 
 /**
  * if - else控制

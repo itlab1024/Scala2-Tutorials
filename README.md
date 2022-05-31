@@ -42,6 +42,10 @@ Scala的好处上面已经提到过了，这些是我们学习Scala的理由，�
 
 
 
+另外这里建议下，没学过Java的不要学习scala！！！
+
+
+
 # Scala入门
 
 ## Scala、Java、JVM的关系
@@ -286,6 +290,7 @@ public class Drink {
 
 ```scala
 package io.itlab1024.github.scala.chapter01
+import io.github.itlab1024.scala.chapter01.ScalaDrink
 
 /**
  * Scala中Drink类
@@ -349,7 +354,7 @@ val 变量名[: 类型] = 初始值
 ```scala
 package io.itlab1024.github.scala.chapter02
 
-import io.itlab1024.github.scala.chapter01.ScalaDrink
+import io.github.itlab1024.scala.chapter01.ScalaDrink
 
 object Test02_Variable {
   def main(args: Array[String]): Unit = {
@@ -1030,3 +1035,462 @@ for (i <- 0 to 10 if b > 1) {
 }
 ```
 
+### 循环步长
+
+上面我们使用的for循环都是默认一步加一，有时候我们可能希望自定义步长。scala中使用`by`关键字来控制步长（步长不能是0 否则抛出异常，并且还能是小数）
+
+```scala
+// 循环步长
+for (i <- 1 to 10 by 2) {
+	println(i) //1 3 5 7 9
+}
+// by 后也可以使用负数，当从大到小遍历的时候有用
+for (i <- 20 to 1 by -2) {
+  println(i) //20,8,16,14,12,10,8,6,4,2
+}
+// 步长能使用小数吗？可以，要求to前后也必须是小数，也就是类型一致
+for (i <- 1.3 to 10.0 by 22.0) { //会提示to过期，使用BigDecimal，因为Double和Float计算结果取决于操作系统，会出现不准确。
+  println(i) //1 3 5 7 9
+}
+//使用BigDecimal
+for (i <- BigDecimal.decimal(1.3) to 10.0 by 22.0) { //会提示to过期，使用BigDecimal
+  println(i) //1 3 5 7 9
+}
+```
+
+### Reverse
+
+```scala
+// 和下面的for循环等价
+for (i <- 20 to 1 reverse) {
+	println(i) 
+}
+
+for (i <- 1 to 20) {
+	println(i)
+}
+```
+
+### 引入变量
+
+```scala
+// 引入变量,j就是引入的变量，两个表达式用;隔开。
+for (i <-0 to 10 ; j = i + 1) {
+  println(s"i=$i, j=$j")
+}
+```
+
+### 循环返回值
+
+scala中默认情况下返回的是Unit，必须使用`yeild`关键字来实现不同的返回值。
+
+```scala
+//循环返回值
+val s1: Unit = for (i <- 1 to 10) {
+	"结果"
+}
+println(s"s1 = $s1") //s1 = ()
+
+val s2 = for (i <- 1 to 10) yield {
+	"结果"
+}
+println(s"s2 = $s2") // s2 = Vector(结果, 结果, 结果, 结果, 结果, 结果, 结果, 结果, 结果, 结果)
+
+// 将i都乘以2 ，最终返回一个数组
+val s3 = for (i <- 1 to 10) yield {
+  i * 2
+}
+println(s3) //Vector(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)
+```
+
+### while和do...while
+
+和Java中完全一样，do while即便条件表达式不成立也会先执行一次。
+
+### 循环中断
+
+Java中关于循环中断有两个关键字`break`和`continue`，scala中没有这两个关键字，要使用`breakable`来实现，也可以使用`try catch`来实现。
+
+```scala
+// 循环中断
+// try catch
+try {
+  for (i <- 0 to 10) {
+    if (i == 1) {
+      throw new RuntimeException
+    }
+  }
+} catch {
+  case e: Exception => // 什么也不做，退出循环
+}
+// try catch 虽然可时间，但是有点麻烦， 可以用breaks下的break方法
+Breaks.breakable(for (i <- 0 to 10) {
+  if (i == 1) {
+    Breaks.break();
+  }
+})
+```
+
+我只想说不如java的break方便。我觉得就是为了体现面向对象的思想。但是确实要麻烦了点。
+
+
+
+# 函数式编程
+
+## 函数基本语法
+
+```scala
+def 函数名 (参数变量: 参数变量类型) : 返回类型 {
+  //函数体
+}
+```
+
+## 函数定义
+
+scala中的函数类似java支持0个或者多个参数，不同于java的是scala中的函数还支持多个返回值
+
+### 单返回值
+
+```scala
+// 函数，求两个整数的和
+def sum (x: Int, y: Int) : Int = {
+	x + y // 可以省略return 这是scala中函数的特点
+}
+```
+
+
+
+### 多个返回值
+
+比如给定两个数返回两个数的和以及差值
+
+```
+// 多返回值
+def sumAndDes(x: Int, y: Int): (Int, Int) = {// 多个返回值用括号包裹起来
+	return (x + y, x - y) // return可以省略
+}
+```
+
+
+
+**可变参数**
+
+可变参数可以通过 在类型后使用`*`来定义
+
+```scala
+// 可变参数
+def printlnValues(values: String*)  = {
+}
+```
+
+### 参数默认值
+
+```scala
+//参数默认值
+def defaultParmasFunc(x: Int = 10) = {}
+```
+
+### 带名参数
+
+```scala
+// 带名参数
+def namedParamFunc(name: String, age: Int): Unit = {
+	// 函数体
+}
+namedParamFunc(name = "张三", age = 10) // 调用的时候可以指定名称
+```
+
+## 函数至简原则
+
+* return可以省略，scala使用函数体最后一个代码作为返回值
+* 如果函数体只有一个行代码，大括号可以省略
+* 返回值类型如果能够推断出来，那么可以省略
+* 如果有return，则不能省略返回值类型，必须指定
+* 如果函数明确声明Unit，那么即便函数体中使用return也不会起作用
+* scala如果无返回值类型，可以省略等号
+* 如果函数无参，但是声明了参数列表，那么调用时小括号可以省略
+* 如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略
+* 如果不关心名称只关心处理逻辑，那么def关键字可以省略，这就是匿名函数
+
+代码示例：
+
+```scala
+// 函数至简原则
+//    * return可以省略，scala使用函数体最后一个代码作为返回值
+def func1(x: Int): Int = {
+  x + 1
+}
+
+//    * 如果函数体只有一个行代码，大括号可以省略
+def func2(x: Int): Int = x + 1
+
+//    * 返回值类型如果能够推断出来，那么可以省略
+def func3(x: Int) = x + 1
+
+//    * 如果有return，则不能省略返回值类型，必须指定, 比如下面方法的: Int不能省略
+def func4(x: Int): Int = return x + 1
+
+//    * 如果函数明确声明Unit，那么即便函数体中使用return也不会起作用,
+def fun5(x: Int): Unit = return x + 1
+
+println(fun5(1)) // 结果不是2，而是(),也就是Unit
+
+//    * scala如果无返回值类型，可以省略等号
+def func6(x: Int) {}
+
+//    * 如果函数无参，但是声明了参数列表，那么调用时小括号可以省略
+def func7() = {}
+
+func7 // 等价于func7()
+
+//    * 如果函数没有参数列表，那么小括号可以省略，调用时小括号必须省略
+def fun8 = {}
+
+fun8 // 不能使用fun8()
+
+//    如果不关心名称只关心处理逻辑，那么def关键字可以省略，这就是匿名函数
+val func9 = (name: String) => {
+  // 函数体
+  println(name)
+}
+//      如何调用呢,scala中什么都有返回值
+//      上面的例子可以修改为
+func9("名字")
+```
+
+
+
+## 函数的值传递
+
+```scala
+// ----函数的值传递------
+// 先定义一个函数
+def func10(i: Int): Int = {
+  println("函数func10被调用")
+  i + 1
+}
+// 函数作为值进行传递, 函数名后加上空格再加上_代表这是一个函数整体
+val f1 = func10 _ // 也可以写成val f1 : Int => Int = func10， 也可以写成
+println(f1)
+println(f1(10))
+```
+
+## 函数作为参数传递
+
+```scala
+// 函数可以作为函数参数传递
+    // 定义一个二元计算,下面的dualEval是一个函数，参数是op也是一个函数，此函数的参数列表是Int类型的a和b
+def dualEval(op: (Int, Int) => Int, a: Int, b: Int): Int = {
+  op(a, b)
+}
+
+def op(a: Int, b: Int): Int = {
+  a + b
+}
+
+println(op(1, 2)) // 3
+```
+
+## 函数可以作为函数的返回值
+
+```scala
+// 函数可以作为函数的返回值
+def returnFunc(): String => String = {
+  def subFunc1(s: String) = {
+    println(s)
+    "晕"
+  }
+
+  subFunc1
+}
+
+val stringToString: String => String = returnFunc()
+val str = stringToString("参数")
+println(str)
+```
+
+## 练习
+
+```scala
+val arr: Array[Int] = Array(1, 2, 3)
+
+// 对数组进行处理，将操作抽象出来，处理完毕的结果返回一个新的数组
+def arrayOperation(array: Array[Int], op: Int => Int): Array[Int] = {
+  for (a <- array) yield op(a)
+}
+
+// 定义一个+1操作
+def addOne(i: Int): Int = i + 1
+
+// 我们先对数组arr进行加一，返回新的数组
+val newArr = arrayOperation(arr, addOne)
+
+println(newArr.mkString(",")) // 2,3,4
+```
+
+## 函数柯里化&闭包
+
+闭包：如果一个函数，访问到了他的外部（局部）变量的值，那么这个函数和他所在的环境，就称为闭包
+
+函数柯里化：把一个参数列表的多个参数，编程多个参数列表。
+
+```scala
+ // 闭包
+def add(i: Int): Int => Int = {
+  def add2(j: Int): Int = {
+    i + j
+  }
+
+  add2
+}
+
+val f1 = add(1) //f1是一个函数
+println(f1(2)) // 3
+
+// 函数柯里化，比如上面的闭包就可以写成如下模式，并且推荐使用函数的库里化
+def addCurrying(a: Int)(b: Int): Int = {
+  a + b
+}
+println(addCurrying(1)(2))
+```
+
+
+
+## 递归
+
+自己调用自己就是递归。
+
+示例：n的阶乘，比如5！= 1x2x3x4x5;
+
+```scala
+package io.github.itlab1024.scala.chapter05
+
+/**
+ * 递归
+ */
+object Test04_Recursion {
+  def main(args: Array[String]): Unit = {
+    println(fact(5))
+  }
+
+  def fact(n: Int): Int = {
+    if (n == 0) return 1
+    fact(n - 1) * n
+  }
+
+}
+
+// 递归有什么问题呢?会出现栈帧过多，出现Stack Overflow错误，在scala中如何解决呢？
+def fact2(n: Int) : Int = {
+  @tailrec
+  def work(n: Int, result: Int) : Int = {
+    if (n == 0) return result
+    work(n-1, result * n)
+  }
+  work(n , 1)
+}
+println(fact2(5)) // 结果也是120，但是这种方式就不会增多栈帧数量
+```
+
+
+
+## 控制抽象
+
+```scala
+package io.github.itlab1024.scala.chapter05
+
+/**
+ * 控制抽象
+ */
+object Test05_ControlAbstraction {
+  def main(args: Array[String]): Unit = {
+    // 通常函数调用我们都是传递值
+    // 传值参数
+    def f1(): Int = {
+      println("f1调用")
+      1
+    }
+
+    def f2(i: Int): Int = {
+      i
+    }
+
+    println(f2(f1()))
+
+    println("------")
+
+    // 不同于上面的传值参数，接下来看下什么是传名参数
+    // 请注意参数的类型 => Int
+    def f3(i: => Int): Unit = {
+      println(i)
+      println(i)
+    }
+    f3(f1()) //这里需要注意的是f1调用了几次呢？两次，奇怪不，是因为上面f3对于i打印了2次，所有f1就被调用了两次
+    // 运行结果是：
+    /*
+    ------
+    f1调用
+    1
+    f1调用
+    1
+    */
+
+  }
+}
+```
+
+## 懒加载
+
+当函数返回值被声明为`lazy`的时候，函数的执行将被推迟，知道我们首次对其取值，该函数才会运行，这种函数被称为惰性函数
+
+类似于Java JPA中的lazy的概念。
+
+```scala
+package io.github.itlab1024.scala.chapter05
+
+object Test06_LazyFunc {
+  def main(args: Array[String]): Unit = {
+    lazy val i = addOne(1)
+    println(i) // 如果注释掉改行，也就是i不被使用，则addOne方法不会被执行
+  }
+
+  def addOne(i: Int): Int = {
+    println("addOne方法被调用")
+    i + 1
+  }
+}
+
+```
+
+# 面向对象编程
+
+Scala中的面向对象基本和Java相同，我是个javaer，一样的地方我就不写了。主要记录下不同的地方。
+
+## 包
+
+scala有两种包的管理方式，一种和java一样，一个源文件在一个包下（包名和文件所在路径不要求一致），另外一种是scala中支持包名的嵌套
+
+该种方式的特点是：
+
+一个源文件可以有多个包
+
+子包中的类可以直接访问父包汇总的内容，无需导包
+
+```scala
+// 嵌套风格的package
+package p1 {
+  // 定义一个单例对象
+  object o1 {
+    val N1: String = "N1"
+  }
+  package p2 {
+    object o2 {
+      def main(args: Array[String]): Unit = {
+        o1.N1 // 直接调用外层包
+      }
+    }
+  }
+}
+```
+
+## 包对象
