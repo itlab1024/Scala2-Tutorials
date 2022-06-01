@@ -1494,3 +1494,119 @@ package p1 {
 ```
 
 ## 包对象
+
+在scala中可以为每个包定义一个同名的包对象，定义在包对象的成员，做为其对应包下的所有class和objcet的共享变量，可以直接访问。
+
+```scala
+package io.github.itlab1024.scala
+
+package object chapter06 {
+  // 定义共享的值
+  val sharedValue1 : Int = 1
+  // 定义共享方法
+  def pkgName() : String = {
+    "io.github.itlab1024.scala.chapter06"
+  }
+}
+
+// 调用包对象
+package io.github.itlab1024.scala.chapter06
+
+object Test02_PackageObject {
+  def main(args: Array[String]): Unit = {
+    // 调用包对象的方法和成员
+    println(sharedValue1)
+    println(pkgName())
+  }
+}
+
+
+```
+
+## 包导入
+
+跟java相同，有以下不同之处
+
+* 嵌套包可以不通过的包下import，这是局部引入，只在当前包下有效。
+* 可以屏蔽某一个类，比如`import java.util.{HashSet => _,_}`
+* 导入相同包的多个类，用`{}`括起来，逗号分隔
+* 。。。。。。
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+/**
+ * 包导入
+ */
+// 给类起别名
+import java.util.{ArrayList => MyArrays}
+// 不导入HashMap，这有啥用？？?
+import java.util.{HashMap => _}
+
+object Test03_PackageImport {
+  def main(args: Array[String]): Unit = {
+    // 使用别名
+    val i: MyArrays[Int] = new MyArrays[Int]()
+
+  }
+}
+
+// 嵌套包导入
+package A {
+  package B {
+
+  }
+// 有些就不尝试了，感觉用处不大
+}
+```
+
+## 类和对象
+
+类和对象的定义跟java一样，类可以看成一个模板，对象可以认为是一个具体的事务
+
+注意：在scala中没有public关键字（默认就是public的），一个.scala文件中可以定义多个类。
+
+基本语法：
+
+```tex
+[修饰符] class 类名 {
+	//类的body体
+}
+```
+
+示例
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+import scala.beans.BeanProperty
+
+object Test04_Class {
+  def main(args: Array[String]): Unit = {
+    val it = new IT
+    it.name //可以访问
+    //    it.age // 因为是private，不能访问
+    // 赋值
+    //    it.name = "itlab1024" // val常量不能变更值
+    it.weibo = "itlab" // 可以
+    // homeUrl 我们加了 @BeanProperty注解，就可以使用get和set方法
+    it.setHomeUrl("")
+    it.getHomeUrl
+  }
+}
+
+// 定义一个类
+class IT {
+  // 定义属性和方法
+  val name: String = "itlab"
+  // 可以定义为私有的
+
+  private var age: Int = 1
+  @BeanProperty // @BeanProperty 提供getter方法和setter方法
+  var homeUrl = "itlab1024.github.io"
+
+  var weibo: String = _
+
+}
+```
+
