@@ -1610,3 +1610,504 @@ class IT {
 }
 ```
 
+## 封装
+
+封装就是把抽象出来的数据和对数据的操作封装在一起，数据被保护在内部，程序的其他部分只有通过被授权的操作（成员方法），才能对数据进行操作。
+
+
+
+### 访问权限
+
+scala中没有`public`关键字，但是有`private`和`protected`
+
+`private`:只有类的内部和半生对象可以访问
+
+`protected`:同类子类可以访问，同一个包的不同类不能够访问
+
+`private [包名]`：增加包访问权限，包名下的其他类可以访问。
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+// 定义一个父类
+class Test04_ClassForAccess {
+  private var idCard: String = "1333x"
+  private var name: String = "itlab"
+  var sex: String = "男"
+  private[chapter06] var age: Int = 1
+
+  def printInfo(): Unit = {
+    println(s"Persion: $idCard $name, $sex $age")
+  }
+}
+
+package io.github.itlab1024.scala.chapter06
+
+// 定义一个子类
+class Test04_Access extends Test04_ClassForAccess {
+  override def printInfo(): Unit = {
+    //    println(idcard) // 无法访问，idcard是private 只能在本类和其伴生对象中访问
+    println(name) //可以访问，protected，可以再父子类访问
+    println(sex) //可以访问，默认public的
+
+    println(age) // age可以访问，因为使用了private [chapter06]声明了
+  }
+}
+
+```
+
+### 方法
+
+方法和函数一样，只不过方法是类中函数的一种特殊叫法
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+class Test05_Method {
+  // 定义一个方法
+  def method1(): Int = {
+    1
+  }
+}
+
+class subClass extends Test05_Method {
+  // 使用override关键字实现函数的重写
+  override def method1(): Int = super.method1()
+}
+```
+
+### 创建对象
+
+```scala
+// 使用new关键字
+object Test05_Method {
+  def main(args: Array[String]): Unit = {
+    val method = new Test05_Method // 使用new创建一个类的实例对象
+    method.method1() // 调用方法
+  }
+}
+```
+
+### 构造器
+
+scala中也有构造方法，可以定义多个，不同的是定义有点区别。
+
+scala中分为主构造器（仅有一个），和副构造器（可以有多个），用this作为方法名
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+// 默认就有一个主构造器，下面的()可以省略。
+class Test06_Constructor() {
+  var name: String = ""
+  var age: Int = 10
+  println("主构造器被调用")
+
+  // 副构造器，可以有多个
+  def this(name: String) {
+    this() //直接调用主构造器
+    this.name = name
+    println("副构造器被调用")
+  }
+}
+
+object Test06_Constructor {
+  def main(args: Array[String]): Unit = {
+    new Test06_Constructor()
+
+    println("--------")
+
+    new Test06_Constructor("1")
+
+    /*
+    运行结果：
+
+    
+    主构造器被调用
+    --------
+    主构造器被调用
+    副构造器被调用
+    * */
+  }
+}
+```
+
+### 主构造器参数
+
+上面的主构造器是默认的，我们没有进行修改，默认无参，也可以定义参数
+
+```scala
+// 参数可以使用val或者var，如果不修饰则通过 对象.属性名 无法获取到值，可以如下面的age那样指定默认值
+class ConstructorParams(private var name: String, val age: Int = 1) {
+  //    var name: String = "itlab" // 无需再次定义name，否则报错
+
+  // 定义方法打印name
+  def printName(): Unit = {
+    println(this.name)
+  }
+}
+
+// mian方法调用
+// 主构造器参数
+val cp = new ConstructorParams("itlab") // age有默认值，可以省略
+cp.age // 可以访问
+//    cp.name // 访问不到name
+// 调用printname方法
+cp.printName() // itlab
+```
+
+## 继承和多态
+
+scala中的继承通过`extends`关键字，主要有以下特点
+
+* 子类继承父类的属性和方法
+* 单继承
+* 构造器先执行父类再执行子类
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+object Test07_ClassExtends {
+  def main(args: Array[String]): Unit = {
+    val clazz = new SubClass("itlab", 1, "男")
+    //运行结果
+    /*
+    ParentClass 主构造器执行
+    SubClass 主构造器执行
+    SubClass 副构造器调用
+     */
+  }
+}
+
+class ParentClass {
+  var name: String = "ITLAB"
+  var age = 1
+  println("ParentClass 主构造器执行")
+
+  def this(name: String, age: Int) {
+    this()
+    println("ParentClass 副构造器调用")
+    this.name = name
+    this.age = age
+  }
+
+  def printName() = {
+    println(this.name)
+  }
+}
+
+class SubClass extends ParentClass {
+  println("SubClass 主构造器执行")
+  var sex: String = _
+
+  def this(name: String, age: Int, sex: String) {
+    this()
+    println("SubClass 副构造器调用")
+    this.name = name
+    this.age = age
+    this.sex = sex
+  }
+
+  //重写printName方法
+  override def printName(): Unit = {
+    println(this.name + " 子类")
+  }
+  
+  // 多态，简单介绍下，没什么特别的 跟java一样
+  def f1() {}
+  def f1(i: Int){}
+}
+```
+
+## 抽象
+
+scala中使用`abstract`定义抽象类，继承和重写需要注意的点
+
+* 如果父类为抽象类，那么子类需要将抽象的属性和方法实现，否则子类也需要声明为抽象类
+* 重写非抽象方法需要用`override`修饰，重写抽象方法可以省略`override`修饰。
+* 子类调用父类的方法使用`super`关键字
+* 子类对抽象属性进行实现，父类抽象属性可以用`var`修饰，子类对非抽象属性重写，父类非抽象属性只支持`val`类型
+
+示例
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+object Test08_AbstractClass {
+  def main(args: Array[String]): Unit = {
+    val clazz = new Class1
+    clazz.name
+  }
+}
+
+// 抽象类
+abstract class Test08_AbstractClass {
+  // 非抽象属性，抽象方法中的属性不用初始化，其他情况必须初始化
+  var name: String = "itlab1024"
+  // 抽象属性（只声明，没有初始化）
+  val age: Int
+
+  // 非抽象方法
+  def f1(): Unit = {}
+
+  // 抽象方法
+  def f2(): Unit
+}
+
+/**
+ * 普通类继承抽象类
+ */
+class Class1 extends Test08_AbstractClass {
+  // age属性是抽象属性，所以普通类继承的时候必须初始化, override可以省略，但是我个人建议还是加上，代码清晰
+  override val age: Int = 1
+
+  // f2 是抽象方法，普通类继承的时候必须实现该方法, override可以省略，但是我个人建议还是加上，代码清晰
+  override def f2(): Unit = {
+    super.f1() //可以使用super调用父抽象类的方法
+    println(age)
+  }
+
+  // 重写非抽象方法, override不能省略
+  override def f1() {
+  }
+
+  // 重写非抽象属性, override不能省略, 此处虽然编译没有问题，但是运行时会提示错误"overriding variable name in class Test08_AbstractClass of type String;
+  // variable name cannot override a mutable variable
+  //  override var name: String = """
+  // 也就是说变量不需要重写，直接使用name = "value"即可。可以将name修改为val下面的代码就不会有有问题
+  override var name: String = ""
+}
+```
+
+## 匿名子类
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+abstract class Test09_AnonymousClass {
+  var name: String
+  def f1()
+}
+object Test09_AnonymousClass {
+  def main(args: Array[String]): Unit = {
+    new Test09_AnonymousClass {
+      override var name: String = ""
+
+      override def f1(): Unit = {}
+    }
+  }
+}
+```
+
+跟java一样。
+
+## 单例对象（伴生对象）
+
+scala中没有`static`，因为他设计为完全面向对象，`static`并不符合面向对象的思想，但是为了兼容java的静态概念，scala就创造了伴生对象（也叫做单例对象）.
+
+单例对象使用`object`来定义
+
+示例：
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+import io.github.itlab1024.scala.chapter06.Test09_Object.SCALA_NAME
+
+/**
+ * 伴生对象，举个例子，一个类的所有示例对象可能都有一个共同值，在java中，我们在类中定义一个static的变量，然后对象中通过类型.属性名进行访问
+ * 在scala中使用伴生对象来解决，比如下面的Test09_Object有两个，一个是class修饰，一个是object修饰。
+ * object是伴生对象，伴随class修饰的类而生，两者名字要相同
+ */
+object Test09_Object {
+  // 这就类似于java中的。 public staitc final String SCALA_NAME = "scala"
+  val SCALA_NAME: String = "scala"
+}
+
+class Test09_Object {
+  val name: String = SCALA_NAME
+}
+```
+
+通过伴生对象我们能够实现单例模式
+
+示例
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+object Test10_Singleton {
+  private val test10_Singleton: Test10_Singleton = new Test10_Singleton("itlab1024")
+
+  def getInstance(): Test10_Singleton = {
+    test10_Singleton
+  }
+
+  def main(args: Array[String]): Unit = {
+    println(Test10_Singleton.getInstance().eq(Test10_Singleton.getInstance())) // true 说明实例只有一个
+  }
+}
+
+//主构造方法使用private修饰。
+class Test10_Singleton private(val name: String) {
+
+}
+```
+
+
+
+## 特质(Trait)
+
+scala中的特质就是接口，和java中的`interface`类似
+
+scala中的特质可以包含抽象属性和方法，也可以包含具体的属性和方法，感觉跟java中的`abstract`更相似。子类使用`extends`来实现特质，如果有多个特质，则`with`连接，如果又继承类，同时又实现特质的时候，应该把类紧跟在`extends`后。
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+object Test11_Trait {
+  def main(args: Array[String]): Unit = {
+    val s = new S
+    s.f2()
+  }
+}
+
+// 定义一个父类
+class P {
+  def f2(): Unit = {
+    println("p调用")
+  }
+}
+
+// 定义两个trait
+trait t1 {
+  var name: String
+
+  def f1(): Unit
+
+  val age: Int = 10
+
+  def f2(): Unit = {
+    println("t1调用")
+  }
+}
+
+trait t2 {
+  var  name: String
+
+  def f1(): Unit
+
+  val age: Int = 10
+
+  def f2(): Unit = {
+    println("t2调用")
+  }
+}
+
+// 子类,继承父类p，实现特质1和特质2,请注意下面的顺序
+class S extends P with t1 with t2 {
+  override var name: String = ""
+
+  override def f1(): Unit = {}
+
+  override val age: Int = 10
+
+  override def f2(): Unit = super.f2() // f2方法在两个特质里都有， super.f2()调用的是谁呢？是特质t2
+}
+```
+
+需要注意的是如果一个类继承了父类，并且实现了多个特质，比如`subClass extends ParentClass with trait1 with trait2` ,并且父类和两个特质都定义了相同的方法，那么子类的super.方法()。调用的是traint2的方法，这里可以理解为方法被覆盖了。
+
+### 特质叠加、特质钻石问题
+
+以后测试。
+
+## 类型检查和转换
+
+java中使用`instanceOf` 关键字，scala中使用的是函数`isInstanceOf`,转换则使用`asInstanceOf`。
+
+示例
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+object Test11_TypeCheckAndConversion {
+  def main(args: Array[String]): Unit = {
+    val ball = new Ball
+    println("ball是Ball类型吗?" + ball.isInstanceOf[Ball]) // true
+    println("ball是BasketBall类型吗?" + ball.isInstanceOf[BasketBall]) // false
+    val ball2 = new BasketBall
+
+    println("ball2是Ball类型吗?" + ball2.isInstanceOf[Ball]) // true
+    println("ball2是BasketBall类型吗?" + ball2.isInstanceOf[BasketBall]) // true
+
+    // 可以将父类型装置转化为子类型
+    val ball3: BasketBall = new BasketBall
+    println("ball3是Ball类型吗?" + ball3.isInstanceOf[Ball]) // true
+    println("ball3是BasketBall类型吗?" + ball3.isInstanceOf[BasketBall]) // true
+    //    转换
+    val ball4: Ball = ball3.asInstanceOf[Ball]
+
+  }
+}
+
+class Ball {
+
+}
+
+class BasketBall extends Ball {
+
+}
+```
+
+## 枚举类和应用类
+
+* 枚举类需要继承`Enumeration`
+* 应用类需要继承`App`
+
+示例
+
+```scala
+package io.github.itlab1024.scala.chapter06
+
+object Test12_EnumAndAppClass {
+  def main(args: Array[String]): Unit = {
+    println(TimeUnit.YEAR) //YEAR
+    println(TimeUnit.DAY) // DAY
+    println(TimeUnit.HOUR) // HOUR
+    println(TimeUnit.YEAR.id) // 0
+    println(TimeUnit.DAY.id) // 3
+    println(TimeUnit.HOUR.id) // 4
+    println(TimeUnit.MONTH.id) // 1
+
+    // 通过名字获取到枚举
+    val value = TimeUnit.withName("MONTH")
+    println(value)
+  }
+}
+
+object TimeUnit extends Enumeration {
+  val YEAR: TimeUnit.Value = Value("YEAR")
+  val MONTH: TimeUnit.Value = Value
+  val DAY: TimeUnit.Value = Value(3, "DAY")
+  val HOUR: TimeUnit.Value = Value
+  val MINUTE: TimeUnit.Value = Value("MINUTE")
+  val SECOND: TimeUnit.Value = Value
+}
+
+// 应用类
+object MyApp extends App {
+  println("继承APP就省去了main的定义")
+}
+```
+
+# 集合
+
+* scala中的集合有三大类，Seq，Set，Map。所有的集合都实现`Iterable`特质
+* 对于几乎所有的集合类，scala都提供可变和不可变两个版本，分别位于`scala.collection.mutable`和`scala.collection.immutable`中
+
+* scala不可变集合，就是指该集合对象不可修改，每次修改就会返回一个新对象，而不会对原对象进行更改。
+* 可变集合，就是这个集合可以直接对原集合进行修改。不会返回新的对象
+
+建议：在集合操作的时候，不可变用符号，可变用方法。
+
