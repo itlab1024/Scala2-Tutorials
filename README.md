@@ -2609,3 +2609,8 @@ class MyList[E] { // 此处现在是不变的泛型
 
 ---
 
+
+
+Github：https://github.com/ITLab1024/Scala2-Tutorials
+
+![微信公众号](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202206021712863.png)
