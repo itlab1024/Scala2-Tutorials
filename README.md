@@ -2111,3 +2111,359 @@ object MyApp extends App {
 
 建议：在集合操作的时候，不可变用符号，可变用方法。
 
+**集合继承图**
+
+![不可变集合继承图](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202206011916051.jpeg)
+
+## 数组
+
+### 不可变数组
+
+示例
+
+```scala
+package io.github.itlab1024.scala.chapter07
+
+object Test01_ImmutableArray {
+  def main(args: Array[String]): Unit = {
+    var arr: Array[Int] = new Array[Int](10)
+    // 另一种创建的方式,使用apply方法
+    val array = Array.apply(1, 2, 3) // 可省略apply方法， Array(1, 2, 3)
+    println(array.length)
+    // 访问数组中的元素
+    val i = array(0)
+    println("第一个元素是:" + i) // 1
+    // 修改,不是说不可变吗，要注意的是不可变数组的不可变是说内存地址不变，大小不可变，索引上的元素还是可以变的
+    array(0) = 4
+    println(array.mkString(",")) // 4,2,3
+    println("------------")
+    // 循环数组
+    // 普通for loop
+    for(i <- 0 until array.length) {
+      println(i)
+    }
+    println("------------")
+    // 上面代码提示我们可以使用array.indices
+    for (i <- array.indices) {
+      println(i)
+    }
+    println("------------")
+    // 我们也可以使用如下方法
+    for (i <- array) {
+      println(i)
+    }
+    println("------------")
+    // 也可以使用foreach方法，函数式编程
+    array.foreach(println)
+
+    println("------------")
+    // 迭代器
+    val iterator = array.iterator
+    while (iterator.hasNext) {
+      println(iterator.next())
+    }
+    println("------------")
+
+    // 添加元素(追加到最后，使用:+()方法)
+    val newArray = array.:+(0) // 返回新的数组
+    newArray.foreach(println)
+    println("------------")
+
+    // 向最前面添加元素(使用+:()方法)
+    val newArray2 = newArray.+:(-1)
+    newArray2.foreach(println)
+
+    // 简化使用+:和:+
+    val ints = newArray2 :+ 1
+    val ints2 = 29 +: newArray2
+    
+    
+
+  }
+}
+```
+
+### 可变数组
+
+可变数组`ArrayBuffer`
+
+```scala
+package io.github.itlab1024.scala.chapter07
+
+import scala.collection.mutable.ArrayBuffer
+
+/**
+ * 可变数组ArrayBuffer
+ */
+object Test02_ArrayBuffer {
+  def main(args: Array[String]): Unit = {
+    // 创建可变数组
+    val _ = new ArrayBuffer[Int]()
+    // 第二种方法使用伴生对象
+    val array = ArrayBuffer(1, 2, 3)
+    println(array) // ArrayBuffer(1, 2, 3)
+    println("---------")
+
+    // 访问数组的元素
+    val i = array(0)
+    println(i)
+    println("---------")
+
+    // 修改
+    array(0) = -1
+    println(array)
+    println("---------")
+
+    // 添加元素 可以使用:+和+:的方式，但是需要注意的是需要定义新的数组来接收。
+    val ints = array :+ 2 // 向后追加
+    println(ints)
+    println("---------")
+    // 向前追加
+    val ints1 = 1 +: array
+    println(ints1)
+
+    println("---------")
+
+    // 向后追加推荐使用+=来实现
+    println(array) // ArrayBuffer(-1, 2, 3)
+    println("---------")
+
+    // 向前追加使用+=:
+    1 +=: array
+    println(array) // ArrayBuffer(1, -1, 2, 3)
+    println("---------")
+
+    // 也可使用append方法和prepend方法
+    array.append(1)
+    println(array) // ArrayBuffer(1, -1, 2, 3, 1)
+    println("---------")
+    array.prepend(0)
+    println(array) // ArrayBuffer(0, 1, -1, 2, 3, 1)
+    println("---------")
+
+    // 插入值
+    array.insert(1, 100) //在索引1的位置插入100，后面的值后移
+    println(array) // ArrayBuffer(0, 100, 1, -1, 2, 3, 1)
+    println("---------")
+
+    // 删除元素
+    array.remove(1)
+    println(array) //ArrayBuffer(0, 1, -1, 2, 3, 1)
+    println("---------")
+    // 也可以删除索引后的几个值
+    array.remove(1, 2)
+    println(array) // ArrayBuffer(0, 2, 3, 1)
+    println("---------")
+
+    //也可以根据值来删除
+    array -= 1
+    println(array) // ArrayBuffer(0, 2, 3)
+    println("---------")
+
+    // 如果有多个相同的值呢，使用-=只会删除一个，并且从左向右寻找。
+    array.append(1, 2, 1)
+    println(array) // ArrayBuffer(0, 2, 3, 1, 2, 1)
+    array -= 1
+    println(array) //ArrayBuffer(0, 2, 3, 2, 1)
+    
+
+  }
+}
+```
+
+### 可变数组与不可变数组的转换
+
+```scala
+// 可变数组与不可变数组的转换
+var a1 = ArrayBuffer[Int](1, 2, 3)
+// 转换为不可变数组
+val array1: Array[Int] = a1.toArray
+// 将不可变数组转化为可变数组
+val buffer: mutable.Buffer[Int] = array1.toBuffer
+```
+
+### 多维数组
+
+```scala
+package io.github.itlab1024.scala.chapter07
+
+/**
+ * 多维数组
+ */
+object Test03_MultiArray {
+  def main(args: Array[String]): Unit = {
+    // 创建一个二维数组
+    val array: Array[Array[Int]] = Array.ofDim[Int](2, 2)
+
+    // 设置元素
+    array(0)(1) = 1
+
+    // 访问元素
+    val i: Int = array(0)(1)
+    println(i) // 1
+    println("------")
+
+    // 遍历二维数组
+    for (i <- array.indices; j <- array(i).indices) {
+      println(array(i)(j) + "\t")
+      if (j == array(i).length - 1) println()
+    }
+
+    // 使用foreach循环
+    array.foreach(_.foreach(println))
+  }
+}
+```
+
+## 列表List
+
+```scala
+package io.github.itlab1024.scala.chapter07
+
+import scala.collection.mutable.ListBuffer
+
+object Test04_List {
+  def main(args: Array[String]): Unit = {
+    // 创建一个不可变的List,可以使用apply。
+    val l: List[Int] = List.apply(1, 2, 3)
+    // 也可以使用伴生对象创建
+    val list: List[Int] = List(1, 2, 3)
+
+    // 访问list的元素
+    val i = list(1)
+    println(i) // 2
+
+    // 赋值
+    //    list(0) = 10 // 这是不允许的
+
+    // 遍历，可以使用普通for循环，或foreach
+    for(i <- list.indices) {
+      println(i)
+    }
+
+    // 添加元素
+    // 向最后添加
+    val list1 = list :+ 10
+    println(list1) // List(1, 2, 3, 10)
+    // 向前添加
+    val list2 = 11 +: list1
+    println(list2) // List(11, 1, 2, 3, 10)
+
+
+    // 合并列表
+    val l1 = List(1)
+    val l2 = List(2)
+    val l3 = l1 ::: l2 // 也可以使用l1 ++ l2
+    println(l3) // List(1, 2)
+
+
+    // 可变列表ListBuffer
+    val lb: ListBuffer[Int] = ListBuffer[Int](1, 2, 3)
+    lb.append(4)
+    println(lb) // ListBuffer(1, 2, 3, 4)
+    //其他的不操作了。。。。。。，跟ArrayBuffer类似
+
+  }
+}
+```
+
+## Set
+
+不可变集合Set
+
+```scala
+package io.github.itlab1024.scala.chapter07
+
+object Test05_ImmutableSet {
+  def main(args: Array[String]): Unit = {
+    // 创建Set
+    val s = Set(1, 2)
+    // 添加元素
+    val ns = s + 3
+    println(ns) // Set(1, 2, 3)
+  }
+}
+
+```
+
+可变集合Set
+
+```scala
+package io.github.itlab1024.scala.chapter07
+
+import scala.collection.mutable
+
+object Test06_MutableSet {
+
+  def main(args: Array[String]): Unit = {
+    // 创建可变set
+    val set = mutable.Set(1, 2, 3)
+    // 添加
+    set += 10
+    println(set) //Set(1, 2, 3, 10)
+    // 建议使用add方法
+    set.add(9)
+    println(set) // Set(9, 1, 2, 3, 10)
+  }
+}
+```
+
+## Map
+
+可变Map
+
+```scala
+package io.github.itlab1024.scala.chapter07
+
+object Test07_ImmutableMap {
+  def main(args: Array[String]): Unit = {
+    // 创建Map
+    val map: Map[Int, Int] = Map[Int, Int]((1, 2), (3, 4)) // 也可以使用->,比如1->2,3->4
+    println(map) // Map(1 -> 2, 3 -> 4)
+
+    // 添加
+    val map1 = map + (5 -> 6)
+    println(map1) // Map(1 -> 2, 3 -> 4, 5 -> 6)
+
+    // 删除
+    val map2 = map1 - 1
+    println(map2) // Map(3 -> 4, 5 -> 6)
+
+    // 通过key获取
+    val i = map2(3)
+    println(i) // 4, 如果key不存在会抛出异常
+
+    // 循环
+    for((k, v) <- map2) {
+      println(s"k=$k, v=$v")
+    }
+
+
+  }
+}
+```
+
+可变的Map
+
+```scala
+package io.github.itlab1024.scala.chapter07
+
+import scala.collection.mutable
+
+object Test08_MutableMap {
+  def main(args: Array[String]): Unit = {
+    // 定义可变的map
+    val map: mutable.Map[Int, Int] = mutable.Map(1 -> 2, 3 -> 4)
+    // 添加
+    map + (5 -> 6)
+    println(map) // Map(1 -> 2, 3 -> 4) 为啥没加进去，其实+这个函数就是为了不可变设计的。但是scala缺无法根据不同的map区分，其实list和set也是如此
+
+    // 使用
+    map.put(5, 6)
+    println(map) // Map(5 -> 6, 1 -> 2, 3 -> 4)
+    
+    // 懒了，其他的不试了，以后用的时候再积累吧
+  }
+}
+```
+
