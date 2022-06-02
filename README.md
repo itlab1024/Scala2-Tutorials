@@ -2467,3 +2467,145 @@ object Test08_MutableMap {
 }
 ```
 
+## 元组
+
+元组可以理解为一个容器，可以存放各种不同或者相同类型的数据。
+
+```scala
+package io.github.itlab1024.scala.chapter08
+
+/**
+ * 元组
+ */
+object Test01_Tuple {
+  def main(args: Array[String]): Unit = {
+    // 创建元组
+    val tuple1: (Int, String, Boolean) = (1, "a", true)
+    // 获取元组元素，通过_index的方式
+    println(tuple1._1) // 1
+    println(tuple1._2) // a
+    println(tuple1._3) // true
+
+    // 遍历元组
+    for(e <- tuple1.productIterator) {
+      println(e)
+    }
+  }
+}
+```
+
+## 队列
+
+```scala
+package io.github.itlab1024.scala.chapter08
+
+import scala.collection.mutable
+
+/**
+ * scala中的队列
+ */
+object Test02_Queue {
+  def main(args: Array[String]): Unit = {
+    // 定义队列
+    val queue: mutable.Queue[Int] = mutable.Queue[Int]()
+    println(queue) //Queue()
+
+    // 入队
+    queue.enqueue(1)
+    println(queue) // Queue(1)
+
+    // 出队
+    val i = queue.dequeue()
+    println(i) // 1
+    println(queue) //Queue()
+  }
+}
+```
+
+# 模式匹配
+
+主要学习下样例类（case class）的匹配
+
+```
+package io.github.itlab1024.scala.chapter09
+
+object Test01_PatternMatch {
+  def main(args: Array[String]): Unit = {
+    // match默认是无法对普通类进行操作的，必须在类的伴生对象中实现自己的apply和unapply方法。scala中提供了样例类，这样的类默认就提供了这些方法
+    val t = T("itlab1024")
+    t match {
+      case T("1") => println("匹配1")
+      case _ =>
+    }
+  }
+}
+
+// 样例类
+case class T(name: String) {
+}
+```
+
+# 异常处理
+
+```scala
+package io.github.itlab1024.scala.chapter10
+
+object Test01_Exception {
+  def main(args: Array[String]): Unit = {
+    try {
+
+    } catch {
+      case e: NullPointerException => println("空指针")
+      case ex: ClassNotFoundException => println("类没没找到")
+    } finally {
+      // 别忘了关闭流等操作。。。。
+    }
+  }
+}
+```
+
+# 泛型
+
+scala中的泛型比java稍微复杂点，会分为协变，逆变
+
+```scala
+class MyClass[+T] // 协变
+class MyClass[-T] // 逆变
+class MyClass[T]	// 不变
+```
+
+协变：Son是Father的子类，则MyList[Son]也可以作为MyList[Father]的子类
+
+逆变：Son是Father的子类，则MyList[Son]作为MyList[Father]的父类
+
+不变：Son是Father的子类，则MyList[Son]和MyList[Father]没有关系
+
+```scala
+package io.github.itlab1024.scala.chapter11
+
+object Test01_Generics {
+  // 协变和逆变
+  val l: MyList[Father] = new MyList[Son] // 这是不允许的，但是如果将MyList的泛型修改为+E则没有问题。
+  val n: MyList[Son] = new MyList[Father] // 这也是不允许的，，但是如果将MyList的泛型修改为-E则没有问题。
+}
+
+class Father {
+
+}
+
+class Son extends Father {
+
+}
+
+// 定义泛型的集合类型
+class MyList[E] { // 此处现在是不变的泛型
+
+}
+```
+
+
+
+> 总结，粗略的学习了下，感觉scala的设计有点复杂了，尤其里面各种方法，比如`+=:`,`::`,`:::`等，很难记。
+
+---
+
