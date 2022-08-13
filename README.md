@@ -12,7 +12,7 @@ Scala的非常适合大数据处理，我们熟悉的Spark、Flink、Kafka等底
 
 Scala目前主流版本是2，目前版本3也已经Released。先学习2，再学习3。
 
-![Scala官网](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231147213.png)
+![Scala官网](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132002310.png)
 
 
 
@@ -50,7 +50,7 @@ Scala的好处上面已经提到过了，这些是我们学习Scala的理由，�
 
 ## Scala、Java、JVM的关系
 
-![Scala、Java和JVM关系](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231300992.jpeg)
+![Scala、Java和JVM关系](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132002215.png)
 
 Java和JVM的关系：写代码(.java) => 使用`javac`命令编译为`.class`文件 => 使用JVM运行
 
@@ -77,7 +77,7 @@ OpenJDK 64-Bit Server VM Corretto-17.0.3.6.1 (build 17.0.3+6-LTS, mixed mode, sh
 
 Scala支持Mac、Windows、Linux等系统。有多种安装方式，
 
-![image-20220523130559667](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231305748.png)
+![image-20220523130559667](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132003662.png)
 
 官方推荐使用`cs setup`安装
 
@@ -199,19 +199,19 @@ hello
 
 使用`IDEA`开发scala需要安装插件。
 
-![IDEA安装Scala插件](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231446809.png)
+![IDEA安装Scala插件](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132003352.png)
 
 ## 创建项目
 
-![IDEA创建Scala项目](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231515233.png)
+![IDEA创建Scala项目](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132003871.png)
 
 
 
-![等待中](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231546413.png)
+![等待中](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132003634.png)
 
 
 
-![创建完成](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231528324.png)
+![创建完成](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132003003.png)
 
 Scala支持使用`SBT`和`IntelliJ`创建项目，我用的是`sbt`。其他的方式我就不演示了。
 
@@ -221,15 +221,15 @@ Scala支持使用`SBT`和`IntelliJ`创建项目，我用的是`sbt`。其他的�
 
 在上图中`scala`文件夹上邮件，选择创建package
 
-![创建package](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231531551.png)
+![创建package](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132003807.png)
 
 创建一个Object，scala中的`Object`是一个单例类，全局只有一份
 
-![新建Scala Class，选中Object](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231533007.png)
+![新建Scala Class，选中Object](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132003317.png)
 
 编写入口程序main方法的代码
 
-![Hello World main代码](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231535529.png)
+![Hello World main代码](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132004979.png)
 
 
 
@@ -309,7 +309,7 @@ object ScalaDrink {
 
 IDEA工具很有好的为我们编辑了类和伴生对象的关系。
 
-![伴生对象关系](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205231617342.png)
+![伴生对象关系](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132004105.png)
 
 
 
@@ -553,7 +553,7 @@ object Test05_StdIn {
 
 ```
 
-![绿色部分是用户输入部分](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205250946966.png)
+![绿色部分是用户输入部分](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132005923.png)
 
 ## 文件输入输出（IO）
 
@@ -596,7 +596,7 @@ object Test06_FileIO {
 
 scala是纯面向对象的语言，没有基本类型概念，我们通过官网一张图来看下类型继承关系。
 
-![Scala Type Hierarchy](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205252032768.svg)
+![Scala Type Hierarchy](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132005953.svg)
 
 * Scala中一切数据都是对象，并且是`Any`的子类。
 * Scala中主要分为两种数据：`数值类型(AnyVal)`和`引用类型(AnyRef)`。
@@ -720,7 +720,7 @@ Scala中的数据转换规则跟Java的一样
 
 当Scala程序在进行赋值或者运算时，精度小的类型自动转换为精度大的数值类型，这就是自动类型转换（也叫做隐式转换）。
 
-![类型精度排序图，从上到下，从大到小](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202205271728900.jpeg)
+![类型精度排序图，从上到下，从大到小](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132006038.png)
 
 基本说明：
 
@@ -2113,7 +2113,7 @@ object MyApp extends App {
 
 **集合继承图**
 
-![不可变集合继承图](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202206011916051.jpeg)
+![不可变集合继承图](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202208132007982.png)
 
 ## 数组
 
@@ -2613,4 +2613,4 @@ class MyList[E] { // 此处现在是不变的泛型
 
 Github：https://github.com/ITLab1024/Scala2-Tutorials
 
-![微信公众号](https://raw.githubusercontent.com/ITLab1024/picgo-images/main/202206021712863.png)
+![微信公众号](https://itlab1024-1256529903.cos.ap-beijing.myqcloud.com/202207231727053.png)
